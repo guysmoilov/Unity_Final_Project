@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\WildWest\Assets\Robber\RobberScript.cs">
+    <Files>
+      <File FileName="..\..\..\WildWest\Assets\Cop\CobScript.cs" Line="33" Column="47" />
+      <File FileName="..\..\..\WildWest\Assets\Scripts\WaypointSeeker.cs" Line="34" Column="48" />
+      <File FileName="..\..\..\WildWest\Assets\Scripts\LimitToZone.cs" Line="24" Column="33" />
+      <File FileName="..\..\..\WildWest\Assets\Robber\RobberScript.cs" Line="64" Column="32" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
