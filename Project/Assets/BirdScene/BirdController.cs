@@ -9,6 +9,12 @@ public class BirdController : MonoBehaviour, IBoid
 	public float maxVelocity = float.MaxValue;
 	public float mass;
 
+	public float seekSlowingRadius;
+
+	public float wanderCircleDistance = 2;
+	public float wanderCircleRadius = 1;
+	public float wanderAngleChange = 5;
+
 	public Transform seekTarget;
 
 	#region IBoidMethods
@@ -39,15 +45,18 @@ public class BirdController : MonoBehaviour, IBoid
 		maxVelocity *= Time.fixedDeltaTime;
 		steering.maxForce = maxVelocity / 10;
 		//Debug.Log("Max velocity: " + maxVelocity);
+		velocity = Vector3.forward;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		if (seekTarget != null)
-		{
-			steering.Seek(seekTarget.position, 5);
-		}
+//		if (seekTarget != null)
+//		{
+//			steering.Seek(seekTarget.position, seekSlowingRadius);
+//		}
+
+		steering.Wander(wanderCircleRadius, wanderCircleDistance, wanderAngleChange);
 
 		velocity = steering.Update();
 		transform.LookAt(transform.position + velocity);

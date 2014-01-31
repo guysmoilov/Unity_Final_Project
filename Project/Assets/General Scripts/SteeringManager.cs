@@ -33,7 +33,7 @@ public class SteeringManager
 
 	public void Wander(float circleRadius, float circleDistance, float angleChange)
 	{
-		steering += DoWander();
+		steering += DoWander(circleRadius, circleDistance, angleChange);
 	}
 
 	public void FollowLeader(Vector3 leader, IList<Vector3> others)
@@ -72,13 +72,31 @@ public class SteeringManager
 
 		return force;
 	}
-	protected virtual Vector3 DoWander()
+
+	protected float wanderAngleX;
+	protected float wanderAngleY;
+	protected virtual Vector3 DoWander(float circleRadius, float circleDistance, float angleChange)
 	{
 		var circleCenter = host.GetVelocity().normalized;
-		//circleCenter *= 
+		circleCenter *= circleDistance;
+		Debug.Log("Circle center: " + circleCenter.magnitude + circleCenter);
+		Debug.DrawRay(host.GetPosition(), circleCenter, Color.blue);
 
+		var displacement = Vector3.forward * circleRadius;
+		Debug.Log("Disp1: " + displacement);
+		displacement = Quaternion.AngleAxis(wanderAngleX, Vector3.up) * displacement;
+		displacement = Quaternion.AngleAxis(wanderAngleY, Vector3.forward) * displacement;
+		Debug.Log("Rotated displacement: " + displacement);
+		Debug.DrawRay(host.GetPosition() + circleCenter, displacement, Color.red);
 
-		throw new System.NotImplementedException();
+		wanderAngleX += Random.value * angleChange - angleChange * 0.5f;
+		Debug.Log("new wander angle X: " + wanderAngleX);
+		wanderAngleY += Random.value * angleChange - angleChange * 0.5f;
+		Debug.Log("new wander angle Y: " + wanderAngleY);
+
+		var wanderForce = circleCenter + displacement;
+		Debug.Log("Wander vector: " + wanderForce);
+		return wanderForce;
 	}
 
 	#endregion
