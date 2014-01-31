@@ -79,23 +79,15 @@ public class SteeringManager
 	{
 		var circleCenter = host.GetVelocity().normalized;
 		circleCenter *= circleDistance;
-		Debug.Log("Circle center: " + circleCenter.magnitude + circleCenter);
-		Debug.DrawRay(host.GetPosition(), circleCenter, Color.blue);
 
 		var displacement = Vector3.forward * circleRadius;
-		Debug.Log("Disp1: " + displacement);
 		displacement = Quaternion.AngleAxis(wanderAngleX, Vector3.up) * displacement;
 		displacement = Quaternion.AngleAxis(wanderAngleY, Vector3.forward) * displacement;
-		Debug.Log("Rotated displacement: " + displacement);
-		Debug.DrawRay(host.GetPosition() + circleCenter, displacement, Color.red);
 
 		wanderAngleX += Random.value * angleChange - angleChange * 0.5f;
-		Debug.Log("new wander angle X: " + wanderAngleX);
 		wanderAngleY += Random.value * angleChange - angleChange * 0.5f;
-		Debug.Log("new wander angle Y: " + wanderAngleY);
 
 		var wanderForce = circleCenter + displacement;
-		Debug.Log("Wander vector: " + wanderForce);
 		return wanderForce;
 	}
 
