@@ -26,7 +26,7 @@ public class SteeringManager
 
 	#region Behaviours
 
-	public void Seek(Vector3 target, float slowingRadius = 20) 
+	public void Seek(Vector3 target, float slowingRadius) 
 	{
 		steering += DoSeek(target, slowingRadius);
 	}
