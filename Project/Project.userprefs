@@ -1,11 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\WildWest\Assets\Robber\RobberScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BirdScene\BirdController.cs">
     <Files>
-      <File FileName="..\..\..\WildWest\Assets\Cop\CobScript.cs" Line="33" Column="47" />
-      <File FileName="..\..\..\WildWest\Assets\Scripts\WaypointSeeker.cs" Line="34" Column="48" />
-      <File FileName="..\..\..\WildWest\Assets\Scripts\LimitToZone.cs" Line="24" Column="33" />
-      <File FileName="..\..\..\WildWest\Assets\Robber\RobberScript.cs" Line="64" Column="32" />
+      <File FileName="Assets\BirdScene\BirdController.cs" Line="46" Column="40" />
+      <File FileName="Assets\General Scripts\SteeringManager.cs" Line="102" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
