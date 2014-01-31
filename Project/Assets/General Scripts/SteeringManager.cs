@@ -104,11 +104,10 @@ public class SteeringManager
 		if (closeBoidsCount > 0)
 		{
 			force /= closeBoidsCount;
+			force.Normalize();
+			force *= maxSeparation;
 		}
 
-		force.Normalize();
-		force *= maxSeparation;
-		Debug.Log(force);
 		return force;
 	}
 
@@ -117,17 +116,12 @@ public class SteeringManager
 	public Vector3 Update () 
 	{
 		var velocity = host.GetVelocity();
-		//Debug.Log("Initial velocity: " + velocity);
 
-		//Debug.Log("steering before:" + steering);
 		steering = Vector3.ClampMagnitude(steering, maxForce);
 		steering /= host.GetMass();
-		//Debug.Log("steering after:" + steering);
 
 		velocity += steering;
-		//Debug.Log("velocity before: " + velocity);
 		velocity = Vector3.ClampMagnitude(velocity, host.GetMaxVelocity());
-		//Debug.Log("velocity after:" + velocity);
 
 		return velocity;
 	}
