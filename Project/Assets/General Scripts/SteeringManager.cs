@@ -33,17 +33,13 @@ public class SteeringManager
 
 	public void Wander(float circleRadius, float circleDistance, float angleChange)
 	{
-		steering += DoWander();
+		steering += DoWander(circleRadius, circleDistance, angleChange);
 	}
 
-	public void FollowLeader(Vector3 leader, IList<Vector3> others)
+	public void Separation(IList<IBoid> others, float separationRadius, float maxSeparation)
 	{
-		throw new System.NotImplementedException();
+		steering += DoSeparation(others, separationRadius, maxSeparation);
 	}
-
-	//public void flee(target :Vector3D){}
-	//public void evade(target :IBoid){}
-	//public void pursuit(target :IBoid){}
 
 	#endregion
 
@@ -72,13 +68,48 @@ public class SteeringManager
 
 		return force;
 	}
-	protected virtual Vector3 DoWander()
+
+	protected float wanderAngleX;
+	protected float wanderAngleY;
+	protected virtual Vector3 DoWander(float circleRadius, float circleDistance, float angleChange)
 	{
 		var circleCenter = host.GetVelocity().normalized;
-		//circleCenter *= 
+		circleCenter *= circleDistance;
 
+		var displacement = Vector3.forward * circleRadius;
+		displacement = Quaternion.AngleAxis(wanderAngleX, Vector3.up) * displacement;
+		displacement = Quaternion.AngleAxis(wanderAngleY, Vector3.forward) * displacement;
 
-		throw new System.NotImplementedException();
+		wanderAngleX += Random.value * angleChange - angleChange * 0.5f;
+		wanderAngleY += Random.value * angleChange - angleChange * 0.5f;
+
+		var wanderForce = circleCenter + displacement;
+		return wanderForce;
+	}
+
+	protected virtual Vector3 DoSeparation(IList<IBoid> others, float separationRadius, float maxSeparation)
+	{
+		var force = Vector3.zero;
+		var closeBoidsCount = 0;
+
+		foreach (var boid in others) 
+		{
+			if (boid != host && Vector3.Distance(boid.GetPosition(), host.GetPosition()) <= separationRadius)
+		    {
+				force += host.GetPosition() - boid.GetPosition();
+				closeBoidsCount++;
+			}
+		}
+
+		if (closeBoidsCount > 0)
+		{
+			force /= closeBoidsCount;
+		}
+
+		force.Normalize();
+		force *= maxSeparation;
+		Debug.Log(force);
+		return force;
 	}
 
 	#endregion
