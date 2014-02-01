@@ -4,7 +4,7 @@ using System.Collections;
 public class GUIScript : MonoBehaviour 
 {
 	public int countdown = 5;
-	public Rect countDownDisplay = new Rect(Screen.width / 2 - 30, Screen.height / 2 - 10, 60, 20);
+	Rect countDownDisplay;
 	public GUIStyle countdownStyle;
 
 	public GUIStyle messageStyle;
@@ -13,6 +13,7 @@ public class GUIScript : MonoBehaviour
 
 	void Start()
 	{
+		countDownDisplay = new Rect(Screen.width / 2 - 30, Screen.height / 2 - 10, 60, 20);
 		StartCoroutine(ChangeFont());
 	}
 
@@ -37,7 +38,7 @@ public class GUIScript : MonoBehaviour
 			}
 			else
 			{
-				GUI.Label(countDownDisplay, "SHOOT!");
+				GUI.Label(countDownDisplay, "SHOOT!", messageStyle);
 			}
 		}
 	}
@@ -51,7 +52,6 @@ public class GUIScript : MonoBehaviour
 
 		for (; countdown > 0; countdown--)
 		{
-			Debug.Log(countdown);
 			for (;countdownStyle.fontSize > 0; countdownStyle.fontSize--)
 			{
 				yield return new WaitForFixedUpdate();
