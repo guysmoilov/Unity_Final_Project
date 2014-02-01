@@ -10,11 +10,13 @@ public class GUIScript : MonoBehaviour
 	public GUIStyle messageStyle;
 
 	bool countdownStarted = false;
+	bool startedShooting = false;
 
 	void Start()
 	{
 		countDownDisplay = new Rect(Screen.width / 2 - 30, Screen.height / 2 - 10, 60, 20);
 		StartCoroutine(ChangeFont());
+		StartCoroutine(StartShooting());
 	}
 
 	void OnGUI()
@@ -49,7 +51,7 @@ public class GUIScript : MonoBehaviour
 				GUI.Label(countDownDisplay, "SHOOT!", messageStyle);
 
 				// Enable shooting
-				Camera.main.GetComponent<MouseShootScript>().enabled = true;
+				startedShooting = true;
 			}
 		}
 	}
@@ -70,5 +72,13 @@ public class GUIScript : MonoBehaviour
 
 			countdownStyle.fontSize = originalFontSize;
 		}
+	}
+
+	IEnumerator StartShooting()
+	{
+		while (!startedShooting)
+			yield return new WaitForFixedUpdate();
+
+		Camera.main.GetComponent<MouseShootScript>().enabled = true;
 	}
 }
