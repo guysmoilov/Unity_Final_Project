@@ -27,13 +27,15 @@ public class GUIScript : MonoBehaviour
 			{
 				countdownStarted = true;
 
-				// TODO: Make birds wander
 				var birds = GameObject.FindGameObjectsWithTag("Bird");
 
 				foreach (var bird in birds)
 				{
 					bird.GetComponent<StackFSM>().PushState(bird.GetComponent<BirdController>().WanderingState);
 				}
+
+				var leader = GameObject.FindGameObjectWithTag("LeaderBird");
+				leader.GetComponent<StackFSM>().PushState(leader.GetComponent<BirdController>().WanderingState);
 			}
 		}
 		else
