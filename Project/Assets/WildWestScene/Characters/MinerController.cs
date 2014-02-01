@@ -3,7 +3,6 @@ using System.Collections;
 
 public class MinerController : MonoBehaviour
 {
-	private float TIME_FOR_RECALC = 0.3f;
 	public float MinDistanceToDie = 3.0f;
 	public float MinDistanceToFlee = 15.0f;
 	public float FleeSpeed = 250f;
@@ -14,7 +13,6 @@ public class MinerController : MonoBehaviour
 	public GameObject Mine;
 	private GameObject Bandit;
 	private float timeIdle;
-	private float timeRecalcPath;
 	private TextMesh textMesh;
 	private bool isStuckWhileRunning = false;
 	
@@ -34,7 +32,6 @@ public class MinerController : MonoBehaviour
 	void Reset()
 	{
 		timeIdle = 0;
-		timeRecalcPath = 0;
 		isStuckWhileRunning = false;
 	}
 	
@@ -48,7 +45,8 @@ public class MinerController : MonoBehaviour
 		}
 		else
 		{
-			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee)
+			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee &&
+			    Bandit.GetComponent<StackFSM>().PeekState() != Bandit.GetComponent<BanditController>().Dead)
 			{
 				Reset();
 				brain.PopState();
@@ -72,7 +70,8 @@ public class MinerController : MonoBehaviour
 		} 
 		else
 		{
-			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee) {
+			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee &&
+			    Bandit.GetComponent<StackFSM>().PeekState() != Bandit.GetComponent<BanditController>().Dead) {
 				Reset();
 				animator.Play("Running");
 				textMesh.text = "Miner: Fleeing";
@@ -94,7 +93,8 @@ public class MinerController : MonoBehaviour
 		}
 		else
 		{
-			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee) {
+			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee &&
+			    Bandit.GetComponent<StackFSM>().PeekState() != Bandit.GetComponent<BanditController>().Dead) {
 				Reset();
 				animator.Play("Running");
 				textMesh.text = "Miner: Fleeing";
@@ -108,7 +108,7 @@ public class MinerController : MonoBehaviour
 		textMesh.text = "Miner: Dead";
 		Reset ();
 	}
-	
+
 	void Flee()
 	{
 
@@ -122,7 +122,7 @@ public class MinerController : MonoBehaviour
 			// isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,2f);
 			RaycastHit hitInfo;
 			Physics.Raycast(rayCastSource,runTo,out hitInfo,2f);
-			if(hitInfo.collider.gameObject.name == "Terrain")
+			if(hitInfo.collider != null && hitInfo.collider.gameObject.name == "Terrain")
 			{
 				isStuckWhileRunning = true;
 			}
@@ -131,7 +131,7 @@ public class MinerController : MonoBehaviour
 				animator.Play ("Idle");
 			}
 		}
-
+		// Dead because of bandit
 		if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToDie)
 		{
 			print("Miner died");
@@ -144,7 +144,9 @@ public class MinerController : MonoBehaviour
 			brain.PushState(Dead);
 		}
 
-		if (Vector3.Distance (Bandit.transform.position, this.transform.position) > MinDistanceToFlee + 3) {
+		// Bandit is far, return to your business
+		if (Vector3.Distance (Bandit.transform.position, this.transform.position) > MinDistanceToFlee + 3 ||
+		    Bandit.GetComponent<StackFSM>().PeekState() == Bandit.GetComponent<BanditController>().Dead) {
 			Reset();
 			brain.PopState();
 		}

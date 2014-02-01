@@ -142,7 +142,7 @@ public class BanditController : MonoBehaviour
 				// isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,2f);
 				RaycastHit hitInfo;
 				Physics.Raycast(rayCastSource,runTo,out hitInfo,2f);
-				if(hitInfo.collider.gameObject.name == "Terrain")
+				if(hitInfo.collider != null && hitInfo.collider.gameObject.name == "Terrain")
 				{
 					isStuckWhileRunning = true;
 				}
