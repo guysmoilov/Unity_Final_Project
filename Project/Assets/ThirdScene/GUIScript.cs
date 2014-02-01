@@ -28,6 +28,12 @@ public class GUIScript : MonoBehaviour
 				countdownStarted = true;
 
 				// TODO: Make birds wander
+				var birds = GameObject.FindGameObjectsWithTag("Bird");
+
+				foreach (var bird in birds)
+				{
+					bird.GetComponent<StackFSM>().PushState(bird.GetComponent<BirdController>().WanderingState);
+				}
 			}
 		}
 		else

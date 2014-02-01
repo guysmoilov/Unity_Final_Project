@@ -28,6 +28,8 @@ public class BirdController : MonoBehaviour, IBoid
 	public Vector3 minBounds = new Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity);
 	public Vector3 maxBounds = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
 
+	public bool canUserSwitchStates = true;
+
 	#region IBoidMethods
 
 	public virtual Vector3 GetVelocity()
@@ -100,7 +102,7 @@ public class BirdController : MonoBehaviour, IBoid
 
 	void LeadingState()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space) && canUserSwitchStates)
 		{
 			// State transition
 			brain.PushState(WanderingState);
@@ -118,7 +120,7 @@ public class BirdController : MonoBehaviour, IBoid
 
 	void FollowingState()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space) && canUserSwitchStates)
 		{
 			// State transition
 			brain.PushState(WanderingState);
@@ -136,9 +138,9 @@ public class BirdController : MonoBehaviour, IBoid
 		}
 	}
 
-	void WanderingState()
+	public void WanderingState()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space) && canUserSwitchStates)
 		{
 			// State transition
 			brain.PopState();
