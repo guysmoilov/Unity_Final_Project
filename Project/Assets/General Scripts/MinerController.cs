@@ -5,6 +5,7 @@ public class MinerController : MonoBehaviour
 {
 	private StackFSM brain;
 	private PathSeeker seeker;
+	private Animator animation;
 	public GameObject Home;
 	public GameObject Mine;
 	private float timeIdle;
@@ -13,15 +14,17 @@ public class MinerController : MonoBehaviour
 	{
 		brain = this.GetComponent<StackFSM> ();
 		seeker = this.GetComponent<PathSeeker> ();
+		animation = this.GetComponent<Animator> ();
 		brain.PushState (CalcStateToMine);
 	    brain.PushState (Idle);
+		animation.Play ("Idle");
 		timeIdle = 0;
 	}
 
 	void Idle() 
 	{
 			timeIdle += Time.deltaTime;
-			if (timeIdle > 1) // second has passed
+			if (timeIdle > 3.2f) // second has passed
 			{
 				timeIdle = 0;
 				brain.PopState ();
@@ -35,6 +38,7 @@ public class MinerController : MonoBehaviour
 			brain.PopState();
 			brain.PushState(CalcStateToHome);
 			brain.PushState(Idle);
+			animation.Play ("Idle");
 		}
 	}
 
@@ -45,12 +49,14 @@ public class MinerController : MonoBehaviour
 			brain.PopState();
 			brain.PushState(CalcStateToMine);
 			brain.PushState(Idle);
+			animation.Play ("Idle");
 		}
 	}
 
 	// NOT A STATE, just set target as home and set WalkingPath State
 	void CalcStateToHome()
 	{
+		animation.Play ("Moving");
 		seeker.SetTarget (Home.transform.position);
 		brain.PopState ();
 		brain.PushState (WalkToHome);
@@ -59,6 +65,7 @@ public class MinerController : MonoBehaviour
 	// NOT A STATE, just set target  as mine and set WalkingPath State
 	void CalcStateToMine()
 	{
+		animation.Play ("Moving");
 		seeker.SetTarget (Mine.transform.position);
 		brain.PopState ();
 		brain.PushState (WalkToMine);
