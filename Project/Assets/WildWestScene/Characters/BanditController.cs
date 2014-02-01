@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BanditController : MonoBehaviour
 {
-	private const float MIN_DISTANCE_FOR_CHASE = 32.3f;
-	private const float MIN_TIME_TO_RECALC_PATH = 0.1f;
+	public float MinDistanceForChase = 20.0f;
+	private const float MIN_TIME_TO_RECALC_PATH = 0.2f;
 	private StackFSM brain;
 	private PathSeeker seeker;
 	private Animator animator;
@@ -45,11 +45,12 @@ public class BanditController : MonoBehaviour
 		else 
 		{
 			// If miner is close and alive, chase him
-			if(Vector3.Distance(MinerToChase.transform.position,transform.position) < MIN_DISTANCE_FOR_CHASE &&
+			if(Vector3.Distance(MinerToChase.transform.position,transform.position) < MinDistanceForChase &&
 			   MinerToChase.GetComponent<StackFSM>().PeekState() != MinerToChase.GetComponent<MinerController>().Dead)
 			{
 				seeker.SetTarget(MinerToChase.transform.position);
 				animator.Play("Running");
+				textMesh.text = "Bandit: Chasing Miner";
 				brain.PushState(Chase);
 			}
 		}
@@ -58,11 +59,12 @@ public class BanditController : MonoBehaviour
 	void Chase()
 	{
 		// If miner is far or dead, abandon the chase
-		if (Vector3.Distance (MinerToChase.transform.position, transform.position) > MIN_DISTANCE_FOR_CHASE + 2.0f ||
+		if (Vector3.Distance (MinerToChase.transform.position, transform.position) > MinDistanceForChase + 2.0f ||
 		    MinerToChase.GetComponent<StackFSM>().PeekState() == MinerToChase.GetComponent<MinerController>().Dead)
 		{
 						brain.PopState ();
 						animator.Play("Moving");
+						textMesh.text = "Bandit: Roaming";
 		}
 		else
 		{
