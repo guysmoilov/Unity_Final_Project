@@ -4,7 +4,7 @@ using System.Collections;
 public class MinerController : MonoBehaviour
 {
 	private float TIME_FOR_RECALC = 0.3f;
-	private float MIN_DISTANCE_FROM_BANDIT_TO_DIE = 3.0f;
+	private float MIN_DISTANCE_FROM_BANDIT_TO_DIE = 1.1f;
 	public float MinDistanceToFlee = 15.0f;
 	public float FleeSpeed = 250f;
 	private StackFSM brain;
@@ -91,11 +91,13 @@ public class MinerController : MonoBehaviour
 		}
 		else
 		{
-			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee)
+			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MIN_DISTANCE_FROM_BANDIT_TO_DIE)
 			{
+				print("Miner died");
 				Reset();
-				animator.Play("Running");
-				brain.PushState (Flee);
+				brain.PopState ();
+				animator.enabled = false;
+				brain.PushState(Dead);
 			}
 		}
 	}
@@ -105,34 +107,30 @@ public class MinerController : MonoBehaviour
 		textMesh.text = "Miner: Dead";
 		Reset ();
 		// Add the undertaker a body to take
-		GameObject.Find ("Undertaker").GetComponent<UndertakerController> ().corpses.Enqueue (this.transform);
+		GameObject.Find ("UnderTaker").GetComponent<UndertakerController> ().corpses.Enqueue (this.transform);
 		
 	}
 	
 	void Flee()
 	{
+
 		if (!isStuckWhileRunning)
 		{
-			textMesh.text = "Miner: Fleeing";
 			Vector3 runTo = (this.transform.position - Bandit.transform.position).normalized * Time.deltaTime * FleeSpeed; // The vector to run
 			transform.forward = runTo;
 			CharacterController controller = GetComponent<CharacterController> ();
 			controller.SimpleMove (runTo);
 			Vector3 rayCastSource = transform.position + new Vector3(0,1,0) + runTo.normalized ;
-			isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,3f);
+			isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,2f);
 			if(isStuckWhileRunning)
 			{
 				animator.Play ("Idle");
 			}
 		}
 
-		if (Vector3.Distance (this.transform.position, Bandit.transform.position) < MIN_DISTANCE_FROM_BANDIT_TO_DIE) 
+		if (Vector3.Distance (this.transform.position, Bandit.transform.position) < MinDistanceToFlee) 
 		{
-			print("Miner died");
-			Reset();
-			brain.PopState ();
-			animator.enabled = false;
-			brain.PushState(Dead);
+
 		}
 	}
 	

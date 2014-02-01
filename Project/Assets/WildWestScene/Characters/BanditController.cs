@@ -5,6 +5,8 @@ public class BanditController : MonoBehaviour
 {
 	public float MinDistanceForChase = 20.0f;
 	public float sheriffFleeDistance = 30f;
+	public float deathDistance = 3f;
+	public float fleeSpeed = 250f;
 
 	private const float MIN_TIME_TO_RECALC_PATH = 0.2f;
 	private StackFSM brain;
@@ -14,7 +16,8 @@ public class BanditController : MonoBehaviour
 	private GameObject MinerToChase;
 	private GameObject sheriff;
 	private float deltaTimeToRecalcPath;
-
+	private bool isStuckWhileRunning = false;
+	
 
 	void Start () 
 	{
@@ -107,7 +110,7 @@ public class BanditController : MonoBehaviour
 
 	public void Dead()
 	{
-
+		textMesh.text = "Bandit: DEAD";
 	}
 
 	void Flee()
@@ -118,6 +121,30 @@ public class BanditController : MonoBehaviour
 		if (Vector3.Distance(sheriff.transform.position,transform.position) > sheriffFleeDistance)
 		{
 			brain.PopState();
+		}
+		else if (Vector3.Distance(sheriff.transform.position,transform.position) < deathDistance)
+		{
+			Debug.Log("Bandit: caught by sheriff");
+
+			var undertaker = GameObject.Find("Undertaker").GetComponent<UndertakerController>();
+			undertaker.corpses.Enqueue(this.transform);
+			brain.PushState(Dead);
+		}
+		else
+		{
+			if (!isStuckWhileRunning)
+			{
+				Vector3 runTo = (this.transform.position - sheriff.transform.position).normalized * Time.deltaTime * fleeSpeed; // The vector to run
+				transform.forward = runTo;
+				CharacterController controller = GetComponent<CharacterController> ();
+				controller.SimpleMove (runTo);
+				Vector3 rayCastSource = transform.position + new Vector3(0,1,0) + runTo.normalized ;
+				isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,2f);
+				if(isStuckWhileRunning)
+				{
+					animator.Play ("Idle");
+				}
+			}
 		}
 	}
 }
