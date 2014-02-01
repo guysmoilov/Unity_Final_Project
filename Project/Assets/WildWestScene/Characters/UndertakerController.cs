@@ -7,10 +7,12 @@ public class UndertakerController : MonoBehaviour
 	StackFSM brain;
 	TextMesh textMesh;
 	PathSeeker pathSeeker;
+	Animator animator;
 
 	public Transform graveyardPoint;
 
 	public Queue<Transform> corpses = new Queue<Transform>();
+	public Transform corpseDragPoint;
 	
 	// Use this for initialization
 	void Start () 
@@ -18,7 +20,17 @@ public class UndertakerController : MonoBehaviour
 		brain = GetComponent<StackFSM>();
 		textMesh = GetComponentInChildren<TextMesh>();
 		pathSeeker = GetComponent<PathSeeker>();
+		animator = GetComponent<Animator>();
 
+		brain.PushState(EnterWaitState);
+	}
+
+	void EnterWaitState()
+	{
+		Debug.Log("Undertaker: entering wait state");
+		animator.Play("Idle");
+
+		brain.PopState();
 		brain.PushState(WaitState);
 	}
 
@@ -29,6 +41,7 @@ public class UndertakerController : MonoBehaviour
 		if (corpses.Count > 0)
 		{
 			Debug.Log("Undertaker exiting WaitState");
+			brain.PushState(EnterWaitState);
 			brain.PushState(FoundBodyState);
 		}
 	}
@@ -37,6 +50,8 @@ public class UndertakerController : MonoBehaviour
 	{
 		Debug.Log("Undertaker: found " + corpses.Peek().gameObject.name + "'s corpse");
 		pathSeeker.SetTarget(corpses.Peek().position);
+
+		animator.Play("Moving");
 
 		brain.PopState();
 		brain.PushState(WalkToBodyState);
@@ -59,6 +74,7 @@ public class UndertakerController : MonoBehaviour
 	{
 		Debug.Log("Undertaker: returning to graveyard");
 		pathSeeker.SetTarget(graveyardPoint.position);
+		animator.Play("Moving");
 
 		brain.PopState();
 		brain.PushState(ReturnBodyState);
@@ -66,7 +82,10 @@ public class UndertakerController : MonoBehaviour
 
 	void ReturnBodyState()
 	{
-		textMesh.text = "Undertaker: Returning " + corpses.Peek().gameObject.name + "'s corpse to the graveyard.";
+		var corpse = corpses.Peek();
+		textMesh.text = "Undertaker: Returning " + corpse.gameObject.name + "'s corpse to the graveyard.";
+
+		corpse.position = corpseDragPoint.position;
 
 		if (pathSeeker.SeekPath())
 		{
