@@ -107,8 +107,6 @@ public class MinerController : MonoBehaviour
 	{
 		textMesh.text = "Miner: Dead";
 		Reset ();
-		// Add the undertaker a body to take
-		GameObject.Find ("Undertaker").GetComponent<UndertakerController> ().corpses.Enqueue (this.transform);
 	}
 	
 	void Flee()
@@ -121,7 +119,13 @@ public class MinerController : MonoBehaviour
 			CharacterController controller = GetComponent<CharacterController> ();
 			controller.SimpleMove (runTo);
 			Vector3 rayCastSource = transform.position + new Vector3(0,1,0) + runTo.normalized ;
-			isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,2f);
+			// isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,2f);
+			RaycastHit hitInfo;
+			Physics.Raycast(rayCastSource,runTo,out hitInfo,2f);
+			if(hitInfo.collider.gameObject.name == "Terrain")
+			{
+				isStuckWhileRunning = true;
+			}
 			if(isStuckWhileRunning)
 			{
 				animator.Play ("Idle");
@@ -134,10 +138,13 @@ public class MinerController : MonoBehaviour
 			Reset();
 			brain.PopState ();
 			animator.enabled = false;
+			// Add the undertaker a body to take
+			GameObject.Find ("Undertaker").GetComponent<UndertakerController> ().corpses.Enqueue (this.transform);
+
 			brain.PushState(Dead);
 		}
 
-		if (Vector3.Distance (Bandit.transform.position, this.transform.position) > MinDistanceToFlee) {
+		if (Vector3.Distance (Bandit.transform.position, this.transform.position) > MinDistanceToFlee + 3) {
 			Reset();
 			brain.PopState();
 		}
