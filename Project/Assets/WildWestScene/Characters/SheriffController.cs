@@ -55,6 +55,7 @@ public class SheriffController : MonoBehaviour
 			   bandit.GetComponent<StackFSM>().PeekState() != bandit.GetComponent<BanditController>().Dead)
 			{
 				Debug.Log("Sheriff: Spotted the bandit, chasing");
+				animator.Play("Running");
 				brain.PopState();
 				brain.PushState(StartPatrolState);
 				brain.PushState(ChaseState);

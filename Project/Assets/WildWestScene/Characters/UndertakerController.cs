@@ -88,6 +88,7 @@ public class UndertakerController : MonoBehaviour
 
 		if (pathSeeker.SeekPath())
 		{
+			corpses.Dequeue();
 			brain.PopState();
         }
 	}
