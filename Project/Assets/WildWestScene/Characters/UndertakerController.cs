@@ -31,11 +31,11 @@ public class UndertakerController : MonoBehaviour
 
 	void WalkToBodyState()
 	{
-		textMesh.text = "Undertaker: Going to get " + corpses.Peek().gameObject.name + "'s corpse.");
+		textMesh.text = "Undertaker: Going to get " + corpses.Peek().gameObject.name + "'s corpse.";
 	}
 
 	void ReturnBodyState()
 	{
-		textMesh.text = "Undertaker: returning " + corpses.Peek().gameObject.name + "'s corpse to the graveyard.");
+		textMesh.text = "Undertaker: returning " + corpses.Peek().gameObject.name + "'s corpse to the graveyard.";
 	}
 }
