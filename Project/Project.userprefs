@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\General Scripts\PathSeeker.cs">
+    <Files>
+      <File FileName="Assets\General Scripts\PathSeeker.cs" Line="29" Column="27" />
+      <File FileName="Assets\General Scripts\GatherPathFindingNodes.cs" Line="222" Column="1" />
+      <File FileName="Assets\BirdScene\BirdController.cs" Line="60" Column="15" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
