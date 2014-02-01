@@ -4,7 +4,7 @@ using System.Collections;
 public class MinerController : MonoBehaviour
 {
 	private float TIME_FOR_RECALC = 0.3f;
-	private float MIN_DISTANCE_FROM_BANDIT_TO_DIE = 1.1f;
+	private float MIN_DISTANCE_FROM_BANDIT_TO_DIE = 3.0f;
 	public float MinDistanceToFlee = 15.0f;
 	public float FleeSpeed = 250f;
 	private StackFSM brain;
@@ -52,6 +52,7 @@ public class MinerController : MonoBehaviour
 				Reset();
 				brain.PopState();
 				animator.Play("Running");
+				textMesh.text = "Miner: Fleeing";
 				brain.PushState(Flee);
 			}
 		}
@@ -73,6 +74,7 @@ public class MinerController : MonoBehaviour
 			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee) {
 				Reset();
 				animator.Play("Running");
+				textMesh.text = "Miner: Fleeing";
 				brain.PushState (Flee);
 			}
 		}
@@ -91,13 +93,11 @@ public class MinerController : MonoBehaviour
 		}
 		else
 		{
-			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MIN_DISTANCE_FROM_BANDIT_TO_DIE)
-			{
-				print("Miner died");
+			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee) {
 				Reset();
-				brain.PopState ();
-				animator.enabled = false;
-				brain.PushState(Dead);
+				animator.Play("Running");
+				textMesh.text = "Miner: Fleeing";
+				brain.PushState (Flee);
 			}
 		}
 	}
@@ -107,8 +107,7 @@ public class MinerController : MonoBehaviour
 		textMesh.text = "Miner: Dead";
 		Reset ();
 		// Add the undertaker a body to take
-		GameObject.Find ("UnderTaker").GetComponent<UndertakerController> ().corpses.Enqueue (this.transform);
-		
+		GameObject.Find ("Undertaker").GetComponent<UndertakerController> ().corpses.Enqueue (this.transform);
 	}
 	
 	void Flee()
@@ -128,9 +127,13 @@ public class MinerController : MonoBehaviour
 			}
 		}
 
-		if (Vector3.Distance (this.transform.position, Bandit.transform.position) < MinDistanceToFlee) 
+		if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MIN_DISTANCE_FROM_BANDIT_TO_DIE)
 		{
-
+			print("Miner died");
+			Reset();
+			brain.PopState ();
+			animator.enabled = false;
+			brain.PushState(Dead);
 		}
 	}
 	
