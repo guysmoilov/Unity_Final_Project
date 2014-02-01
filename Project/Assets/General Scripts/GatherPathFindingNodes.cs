@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 public class GatherPathFindingNodes : MonoBehaviour
 {
-	private const float NODE_SIZE = 2.5f; // How much the each node covers in pixel
 	private bool[,] GraphOfTerrain;
 	private PathNode[,] GraphOfNodes;
 	public Terrain TerrainObj;
 	public float MaxSlope;
+	public float nodeSize = 2f; // How much the each node covers in meters
 
 	// On Start we create the matrix of where we can step upon the terrain
 	void Start ()
 	{
-		// Initiate the terrian to be the size of the terrain / NODE_SIZE
-		GraphOfTerrain = new bool[(int)(TerrainObj.terrainData.size.x / NODE_SIZE),(int)(TerrainObj.terrainData.size.z / NODE_SIZE)];
+		// Initiate the terrian to be the size of the terrain / nodeSize
+		GraphOfTerrain = new bool[(int)(TerrainObj.terrainData.size.x / nodeSize),(int)(TerrainObj.terrainData.size.z / nodeSize)];
 		GraphOfNodes = new PathNode[GraphOfTerrain.GetLength(0),GraphOfTerrain.GetLength(1)];
 
 		// Get Terrain start position
@@ -46,14 +46,14 @@ public class GatherPathFindingNodes : MonoBehaviour
 				if(GraphOfTerrain[nRow,nCol])
 					GraphOfNodes[nRow,nCol] = new PathNode(new Vector3(SourcePosition.x,terrPosition.y,SourcePosition.z));
 				// Advance in the z axis (columns)
-				SourcePosition.z += NODE_SIZE;
+				SourcePosition.z += nodeSize;
 
-				// print("At " + nRow * NODE_SIZE + ":" + nCol * NODE_SIZE +  " value : " + GraphOfTerrain[nRow,nCol]);
+				// print("At " + nRow * nodeSize + ":" + nCol * nodeSize +  " value : " + GraphOfTerrain[nRow,nCol]);
 			}
 
 			// Start A new row on the terrain
 			SourcePosition.z = terrPosition.z;
-			SourcePosition.x += NODE_SIZE;
+			SourcePosition.x += nodeSize;
 		}
 		// Rerun on the boolean terrain and build a graph of neighbours
 		for (int nRow = 0; nRow < GraphOfTerrain.GetLength(0); nRow++)
@@ -90,7 +90,7 @@ public class GatherPathFindingNodes : MonoBehaviour
 						GraphOfNodes [nRow, nCol].Neightbours.Add(GraphOfNodes [nRow + 1, nCol - 1]);
 
 
-					//print("GraphOfNodes[ " + nRow * NODE_SIZE + "," + nCol * NODE_SIZE +  "] added");
+					//print("GraphOfNodes[ " + nRow * nodeSize + "," + nCol * nodeSize +  "] added");
 				}
 			}
 		}
