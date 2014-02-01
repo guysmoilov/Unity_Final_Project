@@ -10,8 +10,6 @@ public class UndertakerController : MonoBehaviour
 	Animator animator;
 
 	public Transform graveyardPoint;
-	public Transform MinerPrefab;
-	public Transform BanditPrefab;
 
 	public Queue<Transform> corpses = new Queue<Transform>();
 	public Transform corpseDragPoint;
@@ -90,21 +88,6 @@ public class UndertakerController : MonoBehaviour
 
 		if (pathSeeker.SeekPath())
 		{
-			Debug.Log("Undertaker: Got to graveyard");
-			corpses.Dequeue();
-
-			if(corpse.name == "Miner")
-			{
-				Destroy(corpse.gameObject);
-				Instantiate(MinerPrefab);
-			}
-			
-			if(corpse.name == "Bandit")
-			{
-				Destroy(corpse.gameObject);
-				Instantiate(BanditPrefab);
-			}
-
 			brain.PopState();
         }
 	}
