@@ -116,7 +116,6 @@ public class SteeringManager
 
 		force.Normalize();
 		force *= maxSeparation;
-		Debug.Log(force);
 		return force;
 	}
 
