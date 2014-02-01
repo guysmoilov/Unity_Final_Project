@@ -23,6 +23,7 @@ public class WifeController : MonoBehaviour
 
 		if (Random.value < changeStateChance)
 		{
+			Debug.Log("Wife exiting CleanState");
 			brain.PopState();
 
 			if (Random.value >= 0.5f)
@@ -42,6 +43,7 @@ public class WifeController : MonoBehaviour
 		
 		if (Random.value < changeStateChance)
 		{
+			Debug.Log("Wife exiting CookState");
 			brain.PopState();
 			
 			if (Random.value >= 0.5f)
@@ -61,6 +63,7 @@ public class WifeController : MonoBehaviour
 		
 		if (Random.value < changeStateChance)
 		{
+			Debug.Log("Wife exiting LaundryState");
 			brain.PopState();
 			
 			if (Random.value >= 0.5f)
