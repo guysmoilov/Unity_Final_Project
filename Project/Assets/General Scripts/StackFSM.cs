@@ -7,7 +7,7 @@ public class StackFSM : MonoBehaviour
 {
 	protected Stack<Action> stack;
 
-	void Awake () 
+	void Awake ()
 	{
 		stack = new Stack<Action>();
 		stack.Push(null);
