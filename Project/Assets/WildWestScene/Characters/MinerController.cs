@@ -5,19 +5,21 @@ public class MinerController : MonoBehaviour
 {
 	private StackFSM brain;
 	private PathSeeker seeker;
-	private Animator animation;
+	private Animator animator;
 	public GameObject Home;
 	public GameObject Mine;
 	private float timeIdle;
+	private TextMesh textMesh;
 
 	void Start ()
 	{
 		brain = this.GetComponent<StackFSM> ();
 		seeker = this.GetComponent<PathSeeker> ();
-		animation = this.GetComponent<Animator> ();
+		animator = this.GetComponent<Animator> ();
+		textMesh = GetComponentInChildren<TextMesh>();
 		brain.PushState (CalcStateToMine);
 	    brain.PushState (Idle);
-		animation.Play ("Idle");
+		animator.Play ("Idle");
 		timeIdle = 0;
 	}
 
@@ -33,30 +35,38 @@ public class MinerController : MonoBehaviour
 
 	private void WalkToMine()
 	{
+		textMesh.text = "Miner: Going Mine";
 		if (seeker.SeekPath ()) // If we reached destination, go idle
 		{	
 			brain.PopState();
 			brain.PushState(CalcStateToHome);
 			brain.PushState(Idle);
-			animation.Play ("Idle");
+			animator.Play ("Idle");
+			textMesh.text = "Miner: Mining";
 		}
 	}
 
 	private void WalkToHome()
 	{
+		textMesh.text = "Miner: Going Home";
 		if (seeker.SeekPath ()) // If we reached destination, go idle
 		{	
 			brain.PopState();
 			brain.PushState(CalcStateToMine);
 			brain.PushState(Idle);
-			animation.Play ("Idle");
+			animator.Play ("Idle");
+			textMesh.text = "Miner: Zzz...";
 		}
+	}
+
+	public void Dead()
+	{
 	}
 
 	// NOT A STATE, just set target as home and set WalkingPath State
 	void CalcStateToHome()
 	{
-		animation.Play ("Moving");
+		animator.Play ("Moving");
 		seeker.SetTarget (Home.transform.position);
 		brain.PopState ();
 		brain.PushState (WalkToHome);
@@ -65,7 +75,7 @@ public class MinerController : MonoBehaviour
 	// NOT A STATE, just set target  as mine and set WalkingPath State
 	void CalcStateToMine()
 	{
-		animation.Play ("Moving");
+		animator.Play ("Moving");
 		seeker.SetTarget (Mine.transform.position);
 		brain.PopState ();
 		brain.PushState (WalkToMine);
