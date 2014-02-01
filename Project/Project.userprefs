@@ -1,10 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\General Scripts\MinerController.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\General Scripts\PathSeeker.cs">
     <Files>
-      <File FileName="Assets\General Scripts\SteeringManager.cs" Line="181" Column="1" />
-      <File FileName="Assets\General Scripts\PathSeeker.cs" Line="42" Column="62" />
-      <File FileName="Assets\General Scripts\MinerController.cs" Line="20" Column="17" />
+      <File FileName="Assets\General Scripts\MinerController.cs" Line="46" Column="35" />
+      <File FileName="Assets\General Scripts\PathSeeker.cs" Line="65" Column="6" />
+      <File FileName="Assets\General Scripts\StackFSM.cs" Line="47" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
