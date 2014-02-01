@@ -88,7 +88,7 @@ public class MinerController : MonoBehaviour
 			textMesh.text = "Miner: Zzz...";
 		}
 		else
-		{ 
+		{
 			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToFlee) {
 				Reset();
 				animator.Play("Running");
@@ -105,18 +105,17 @@ public class MinerController : MonoBehaviour
 		GameObject.Find ("UnderTaker").GetComponent<UndertakerController> ().corpses.Enqueue (this.transform);
 		
 	}
-
+	
 	void Flee()
 	{
-		
-		if (!isStuckWhileRunning)
-		{
+
+		if (!isStuckWhileRunning) {
 			Vector3 runTo = (this.transform.position - Bandit.transform.position).normalized; // The vector to run
 			CharacterController controller = GetComponent<CharacterController> ();
 			controller.SimpleMove (runTo);
-			
-			isStuckWhileRunning = Physics.Raycast(transform.position + new Vector3(0,1,0),runTo*3.0f,5f);
-			Debug.DrawRay(transform.position,runTo,Color.green,11f);
+			Vector3 rayCastSource = transform.position + new Vector3(0,2,0) + runTo *3.0f;
+			isStuckWhileRunning = Physics.Raycast(rayCastSource,runTo,5f);
+			Debug.DrawRay(rayCastSource,runTo,Color.green,11f);
 		}
 	}
 	
