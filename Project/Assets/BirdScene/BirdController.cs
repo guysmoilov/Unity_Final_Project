@@ -20,6 +20,8 @@ public class BirdController : MonoBehaviour, IBoid
 	protected List<BirdController> otherBirds;
 	protected List<IBoid> otherBirdBoids; 
 	protected BirdController leaderBird;
+
+	public float leaderFollowDistance;
 	public float separationRadius = float.PositiveInfinity;
 	public float maxSeparation = 1;
 
@@ -94,29 +96,55 @@ public class BirdController : MonoBehaviour, IBoid
 
 	void LeadingState()
 	{
-		steering.Wander(wanderCircleRadius, wanderCircleDistance, wanderAngleChange);
-
-		velocity = steering.Update();
-		transform.LookAt(transform.position + velocity);
-		transform.Translate(velocity, Space.World);
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			// State transition
+			brain.PushState(WanderingState);
+		}
+		else
+		{
+			steering.Wander(wanderCircleRadius, wanderCircleDistance, wanderAngleChange);
+			
+			velocity = steering.Update();
+			transform.LookAt(transform.position + velocity);
+			transform.Translate(velocity, Space.World);
+		}
 	}
 
 	void FollowingState()
 	{
-		steering.Seek(leaderBird.GetPosition(), seekSlowingRadius);
-		steering.Separation(otherBirdBoids, separationRadius, maxSeparation);
-		
-		velocity = steering.Update();
-		transform.LookAt(transform.position + velocity);
-		transform.Translate(velocity, Space.World);
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			// State transition
+			brain.PushState(WanderingState);
+		}
+		else
+		{
+			var seekTarget = leaderBird.GetVelocity().normalized * (-1) * leaderFollowDistance;
+			seekTarget += leaderBird.GetPosition();
+			steering.Seek(seekTarget, 0);
+			steering.Separation(otherBirdBoids, separationRadius, maxSeparation);
+			
+			velocity = steering.Update();
+			transform.LookAt(transform.position + velocity);
+			transform.Translate(velocity, Space.World);
+		}
 	}
 
 	void WanderingState()
 	{
-		steering.Wander(wanderCircleRadius, wanderCircleDistance, wanderAngleChange);
-		
-		velocity = steering.Update();
-		transform.LookAt(transform.position + velocity);
-		transform.Translate(velocity, Space.World);
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			// State transition
+			brain.PopState();
+		}
+		else
+		{
+			steering.Wander(wanderCircleRadius, wanderCircleDistance, wanderAngleChange);
+			
+			velocity = steering.Update();
+			transform.LookAt(transform.position + velocity);
+			transform.Translate(velocity, Space.World);
+		}
 	}
 }
