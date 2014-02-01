@@ -55,6 +55,18 @@ public class MouseShootScript : MonoBehaviour
 						renderer.material = blueMaterial;
 					}
 				}
+
+				// Return to leadership behaviour
+				var birds = GameObject.FindGameObjectsWithTag("Bird");
+
+				foreach (var bird in birds)
+				{
+					bird.GetComponent<StackFSM>().PopState();
+				}
+
+				GameObject.FindGameObjectWithTag("LeaderBird").GetComponent<StackFSM>().PopState();
+
+				this.enabled = false;
 			}
 		}
 	}

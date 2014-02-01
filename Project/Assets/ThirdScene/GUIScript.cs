@@ -47,6 +47,9 @@ public class GUIScript : MonoBehaviour
 			else
 			{
 				GUI.Label(countDownDisplay, "SHOOT!", messageStyle);
+
+				// Enable shooting
+				Camera.main.GetComponent<MouseShootScript>().enabled = true;
 			}
 		}
 	}
