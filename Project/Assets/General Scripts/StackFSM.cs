@@ -7,14 +7,12 @@ public class StackFSM : MonoBehaviour
 {
 	protected Stack<Action> stack;
 
-	// Use this for initialization
 	void Awake () 
 	{
 		stack = new Stack<Action>();
 		stack.Push(null);
 	}
-	
-	// Update is called once per frame
+
 	void Update () 
 	{
 		if (stack.Peek() != null)

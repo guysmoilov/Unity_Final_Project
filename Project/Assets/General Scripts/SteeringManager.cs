@@ -40,16 +40,13 @@ public class SteeringManager
 	{
 		steering += DoSeparation(others, separationRadius, maxSeparation);
 	}
-<<<<<<< HEAD
-	
-=======
 
 	public void Bounds(Vector3 minBounds, Vector3 maxBounds)
 	{
 		steering += DoBounds(minBounds, maxBounds);
 	}
 
->>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
+
 	#endregion
 	
 	#region BehaviourImplementation
@@ -116,16 +113,10 @@ public class SteeringManager
 			force.Normalize();
 			force *= maxSeparation;
 		}
-<<<<<<< HEAD
-		
+
 		force.Normalize();
 		force *= maxSeparation;
 		Debug.Log(force);
-		return force;
-	}
-	
-=======
-
 		return force;
 	}
 
@@ -163,34 +154,23 @@ public class SteeringManager
 		return minBoundDiff + maxBoundDiff;
 	}
 
->>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
+
 	#endregion
 	
 	public Vector3 Update ()
 	{
 		var velocity = host.GetVelocity();
-<<<<<<< HEAD
-		//Debug.Log("Initial velocity: " + velocity);
-		
-		//Debug.Log("steering before:" + steering);
-		steering = Vector3.ClampMagnitude(steering, maxForce);
-		steering /= host.GetMass();
-		//Debug.Log("steering after:" + steering);
-		
-=======
 
 		steering = Vector3.ClampMagnitude(steering, maxForce);
 		steering /= host.GetMass();
+		
+		steering = Vector3.ClampMagnitude(steering, maxForce);
+		steering /= host.GetMass();
 
->>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
 		velocity += steering;
 		velocity = Vector3.ClampMagnitude(velocity, host.GetMaxVelocity());
-<<<<<<< HEAD
-		//Debug.Log("velocity after:" + velocity);
-		
-=======
 
->>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
+		
 		return velocity;
 	}
 	
