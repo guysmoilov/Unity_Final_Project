@@ -4,12 +4,10 @@ using System.Collections.Generic;
 
 public class PathSeeker : MonoBehaviour
 {
-	public  float  Speed = 1f;
 
 	public GatherPathFindingNodes AStarSceneObject;
 	private Vector3 toVisit; // Point to reach
-
-	private int currGoal; // which target is currently being visited
+	
 	private int currPathNode; // the path on the way to the target
 	private PathNode[] path;
 	private bool pathCalculated = false;
@@ -24,7 +22,6 @@ public class PathSeeker : MonoBehaviour
 	void Reset()
 	{
 		currPathNode = 0;
-		currGoal = 0;
 		pathCalculated = false;
 	}
 
@@ -46,6 +43,8 @@ public class PathSeeker : MonoBehaviour
 			//	print ("Node at " + node.Position.x + ":" + node.Position.z);
 			//} 
 			pathCalculated = true;
+
+			currPathNode++; // start from path node 1 (node zero is probably close anyway..)
 		}
 
 		if (path != null && currPathNode < path.Length)
@@ -63,7 +62,8 @@ public class PathSeeker : MonoBehaviour
 
 						CharacterController controller = GetComponent<CharacterController> ();
 			//print ("Adding " + toadd.ToString());
-						controller.Move (toadd);
+						//controller.Move (toadd);
+						controller.SimpleMove (toadd);
 			return false;
 				} else
 		{ // We reached our goal return true;

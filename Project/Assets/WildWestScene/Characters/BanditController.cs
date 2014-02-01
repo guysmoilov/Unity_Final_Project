@@ -4,7 +4,7 @@ using System.Collections;
 public class BanditController : MonoBehaviour
 {
 	private const float MIN_DISTANCE_FOR_CHASE = 32.3f;
-	private const float MIN_TIME_TO_RECALC_PATH = 0.5f;
+	private const float MIN_TIME_TO_RECALC_PATH = 0.1f;
 	private StackFSM brain;
 	private PathSeeker seeker;
 	private Animator animator;
@@ -49,8 +49,8 @@ public class BanditController : MonoBehaviour
 			   MinerToChase.GetComponent<StackFSM>().PeekState() != MinerToChase.GetComponent<MinerController>().Dead)
 			{
 				seeker.SetTarget(MinerToChase.transform.position);
-				brain.PushState(Chase);
 				animator.Play("Running");
+				brain.PushState(Chase);
 			}
 		}
 	}
@@ -62,6 +62,7 @@ public class BanditController : MonoBehaviour
 		    MinerToChase.GetComponent<StackFSM>().PeekState() == MinerToChase.GetComponent<MinerController>().Dead)
 		{
 						brain.PopState ();
+						animator.Play("Moving");
 		}
 		else
 		{
