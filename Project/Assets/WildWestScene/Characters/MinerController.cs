@@ -4,7 +4,7 @@ using System.Collections;
 public class MinerController : MonoBehaviour
 {
 	private float TIME_FOR_RECALC = 0.3f;
-	private float MIN_DISTANCE_FROM_BANDIT_TO_DIE = 3.0f;
+	public float MinDistanceToDie = 3.0f;
 	public float MinDistanceToFlee = 15.0f;
 	public float FleeSpeed = 250f;
 	private StackFSM brain;
@@ -26,8 +26,9 @@ public class MinerController : MonoBehaviour
 		textMesh = GetComponentInChildren<TextMesh>();
 		Bandit = GameObject.Find ("Bandit");
 		brain.PushState (CalcStateToMine);
-		brain.PushState (Idle);
+		textMesh.text = "Miner: Zzz...";
 		animator.Play ("Idle");
+		brain.PushState (Idle);
 	}
 	
 	void Reset()
@@ -57,7 +58,7 @@ public class MinerController : MonoBehaviour
 			}
 		}
 	}
-	
+
 	private void WalkToMine()
 	{
 		textMesh.text = "Miner: Going Mine";
@@ -127,13 +128,18 @@ public class MinerController : MonoBehaviour
 			}
 		}
 
-		if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MIN_DISTANCE_FROM_BANDIT_TO_DIE)
+		if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MinDistanceToDie)
 		{
 			print("Miner died");
 			Reset();
 			brain.PopState ();
 			animator.enabled = false;
 			brain.PushState(Dead);
+		}
+
+		if (Vector3.Distance (Bandit.transform.position, this.transform.position) > MinDistanceToFlee) {
+			Reset();
+			brain.PopState();
 		}
 	}
 	
