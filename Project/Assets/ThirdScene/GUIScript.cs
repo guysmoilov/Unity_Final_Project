@@ -79,6 +79,6 @@ public class GUIScript : MonoBehaviour
 		while (!startedShooting)
 			yield return new WaitForFixedUpdate();
 
-		Camera.main.GetComponent<MouseShootScript>().enabled = true;
+		this.GetComponent<MouseShootScript>().enabled = true;
 	}
 }
