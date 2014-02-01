@@ -6,6 +6,7 @@ public class PathSeeker : MonoBehaviour
 {
 
 	public GatherPathFindingNodes AStarSceneObject;
+	public float WalkSpeed = 130f;
 	private Vector3 toVisit; // Point to reach
 	
 	private int currPathNode; // the path on the way to the target
@@ -51,10 +52,10 @@ public class PathSeeker : MonoBehaviour
 		{
 						Vector3 diff = path [currPathNode].Position - transform.position;
 						diff.y = 0;
-						//Vector3 toadd = diff.normalized * Time.deltaTime * Speed;
-			Vector3 toadd = diff.normalized * Time.deltaTime;
-						transform.forward = toadd;
 
+						Vector3 toadd = diff.normalized * Time.deltaTime;
+						transform.forward = toadd;
+						toadd *= WalkSpeed;
 						float distance = diff.magnitude;
 						if (distance < 2) { // we reached a node in the path
 								currPathNode++;
