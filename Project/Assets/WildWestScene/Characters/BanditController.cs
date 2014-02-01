@@ -78,6 +78,11 @@ public class BanditController : MonoBehaviour
 		}
 	}
 
+	public void Dead()
+	{
+
+	}
+
 	void Flee()
 	{
 	}
