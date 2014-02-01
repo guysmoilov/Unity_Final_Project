@@ -93,6 +93,7 @@ public class MinerController : MonoBehaviour
 		{
 			if (Vector3.Distance (Bandit.transform.position, this.transform.position) < MIN_DISTANCE_FROM_BANDIT_TO_DIE)
 			{
+				print("Miner died");
 				Reset();
 				brain.PopState ();
 				animator.enabled = false;
