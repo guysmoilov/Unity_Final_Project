@@ -13,7 +13,7 @@ public class StackFSM : MonoBehaviour
 		stack.Push(null);
 	}
 
-	void Update () 
+	void FixedUpdate () 
 	{
 		if (stack.Peek() != null)
 		{
