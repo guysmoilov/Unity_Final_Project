@@ -33,6 +33,11 @@ public class StackFSM : MonoBehaviour
 		return null;
 	}
 
+	public Action PeekState()
+	{
+		return stack.Peek();
+	}
+
 	public void PushState(Action state)
 	{
 		if (stack.Peek() != state)

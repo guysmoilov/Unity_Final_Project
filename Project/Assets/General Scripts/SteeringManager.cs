@@ -41,6 +41,11 @@ public class SteeringManager
 		steering += DoSeparation(others, separationRadius, maxSeparation);
 	}
 
+	public void Bounds(Vector3 minBounds, Vector3 maxBounds)
+	{
+		steering += DoBounds(minBounds, maxBounds);
+	}
+
 	#endregion
 
 	#region BehaviourImplementation
@@ -109,6 +114,40 @@ public class SteeringManager
 		}
 
 		return force;
+	}
+
+	protected virtual Vector3 DoBounds(Vector3 minBounds, Vector3 maxBounds)
+	{
+		var minBoundDiff = minBounds - host.GetPosition();
+		var maxBoundDiff = maxBounds - host.GetPosition();
+
+		if (minBoundDiff.x < 0)
+		{
+			minBoundDiff.x = 0;
+		}
+		if (minBoundDiff.y < 0)
+		{
+			minBoundDiff.y = 0;
+		}
+		if (minBoundDiff.z < 0)
+		{
+			minBoundDiff.z = 0;
+		}
+
+		if (maxBoundDiff.x > 0)
+		{
+			maxBoundDiff.x = 0;
+		}
+		if (maxBoundDiff.y > 0)
+		{
+			maxBoundDiff.y = 0;
+		}
+		if (maxBoundDiff.z > 0)
+		{
+			maxBoundDiff.z = 0;
+		}
+
+		return minBoundDiff + maxBoundDiff;
 	}
 
 	#endregion

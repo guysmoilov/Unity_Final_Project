@@ -25,6 +25,9 @@ public class BirdController : MonoBehaviour, IBoid
 	public float separationRadius = float.PositiveInfinity;
 	public float maxSeparation = 1;
 
+	public Vector3 minBounds = new Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity);
+	public Vector3 maxBounds = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
+
 	#region IBoidMethods
 
 	public virtual Vector3 GetVelocity()
@@ -84,6 +87,7 @@ public class BirdController : MonoBehaviour, IBoid
 			if (leader != null)
 			{
 				leaderBird = leader.GetComponent<BirdController>();
+				otherBirdBoids.Add(leaderBird);
 				brain.PushState(FollowingState);
 			}
 			else
@@ -104,6 +108,7 @@ public class BirdController : MonoBehaviour, IBoid
 		else
 		{
 			steering.Wander(wanderCircleRadius, wanderCircleDistance, wanderAngleChange);
+			steering.Bounds(minBounds, maxBounds);
 			
 			velocity = steering.Update();
 			transform.LookAt(transform.position + velocity);
@@ -137,10 +142,18 @@ public class BirdController : MonoBehaviour, IBoid
 		{
 			// State transition
 			brain.PopState();
+
+			if (brain.PeekState() == null)
+			{
+				Debug.LogWarning("Tried to pop the last state!");
+				brain.PushState(WanderingState);
+			}
 		}
 		else
 		{
 			steering.Wander(wanderCircleRadius, wanderCircleDistance, wanderAngleChange);
+			steering.Separation(otherBirdBoids, separationRadius, maxSeparation);
+			steering.Bounds(minBounds, maxBounds);
 			
 			velocity = steering.Update();
 			transform.LookAt(transform.position + velocity);
