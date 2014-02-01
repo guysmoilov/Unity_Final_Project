@@ -1,10 +1,18 @@
 ﻿<Properties>
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\General Scripts\PathSeeker.cs">
     <Files>
       <File FileName="Assets\General Scripts\PathSeeker.cs" Line="29" Column="27" />
       <File FileName="Assets\General Scripts\GatherPathFindingNodes.cs" Line="222" Column="1" />
       <File FileName="Assets\BirdScene\BirdController.cs" Line="60" Column="15" />
+=======
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BirdScene\BirdController.cs">
+    <Files>
+      <File FileName="Assets\BirdScene\BirdController.cs" Line="51" Column="26" />
+      <File FileName="Assets\General Scripts\SteeringManager.cs" Line="60" Column="64" />
+>>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -8,7 +8,7 @@ public class StackFSM : MonoBehaviour
 	protected Stack<Action> stack;
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
 		stack = new Stack<Action>();
 		stack.Push(null);
@@ -31,6 +31,11 @@ public class StackFSM : MonoBehaviour
 		}
 
 		return null;
+	}
+
+	public Action PeekState()
+	{
+		return stack.Peek();
 	}
 
 	public void PushState(Action state)

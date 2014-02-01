@@ -40,7 +40,16 @@ public class SteeringManager
 	{
 		steering += DoSeparation(others, separationRadius, maxSeparation);
 	}
+<<<<<<< HEAD
 	
+=======
+
+	public void Bounds(Vector3 minBounds, Vector3 maxBounds)
+	{
+		steering += DoBounds(minBounds, maxBounds);
+	}
+
+>>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
 	#endregion
 	
 	#region BehaviourImplementation
@@ -104,7 +113,10 @@ public class SteeringManager
 		if (closeBoidsCount > 0)
 		{
 			force /= closeBoidsCount;
+			force.Normalize();
+			force *= maxSeparation;
 		}
+<<<<<<< HEAD
 		
 		force.Normalize();
 		force *= maxSeparation;
@@ -112,11 +124,52 @@ public class SteeringManager
 		return force;
 	}
 	
+=======
+
+		return force;
+	}
+
+	protected virtual Vector3 DoBounds(Vector3 minBounds, Vector3 maxBounds)
+	{
+		var minBoundDiff = minBounds - host.GetPosition();
+		var maxBoundDiff = maxBounds - host.GetPosition();
+
+		if (minBoundDiff.x < 0)
+		{
+			minBoundDiff.x = 0;
+		}
+		if (minBoundDiff.y < 0)
+		{
+			minBoundDiff.y = 0;
+		}
+		if (minBoundDiff.z < 0)
+		{
+			minBoundDiff.z = 0;
+		}
+
+		if (maxBoundDiff.x > 0)
+		{
+			maxBoundDiff.x = 0;
+		}
+		if (maxBoundDiff.y > 0)
+		{
+			maxBoundDiff.y = 0;
+		}
+		if (maxBoundDiff.z > 0)
+		{
+			maxBoundDiff.z = 0;
+		}
+
+		return minBoundDiff + maxBoundDiff;
+	}
+
+>>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
 	#endregion
 	
 	public Vector3 Update ()
 	{
 		var velocity = host.GetVelocity();
+<<<<<<< HEAD
 		//Debug.Log("Initial velocity: " + velocity);
 		
 		//Debug.Log("steering before:" + steering);
@@ -124,11 +177,20 @@ public class SteeringManager
 		steering /= host.GetMass();
 		//Debug.Log("steering after:" + steering);
 		
+=======
+
+		steering = Vector3.ClampMagnitude(steering, maxForce);
+		steering /= host.GetMass();
+
+>>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
 		velocity += steering;
-		//Debug.Log("velocity before: " + velocity);
 		velocity = Vector3.ClampMagnitude(velocity, host.GetMaxVelocity());
+<<<<<<< HEAD
 		//Debug.Log("velocity after:" + velocity);
 		
+=======
+
+>>>>>>> b76e98646d6faa10c090f0354d72b130e490e7ac
 		return velocity;
 	}
 	
